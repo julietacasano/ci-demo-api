@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: CI Demo API
+  version: 1.0.0
+  description: API simple para demostrar Integracion Continua, pruebas automatizadas y despliegue.
+
+servers:
+  - url: http://localhost:3000
+    description: Entorno local
+  - url: https://ci-demo-api.vercel.app/
+    description: Entorno de entrega en Vercel
+
+paths:
+  /health:
+    get:
+      summary: Verificar estado de la API
+      responses:
+        "200":
+          description: La API esta funcionando correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  /validate-password:
+    post:
+      summary: Validar una password
+      description: Valida que la password cumpla reglas basicas de seguridad.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  example: Hola1234
+      responses:
+        "200":
+          description: Password valida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Password valida
+
+        "400":
+          description: Password invalida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                    example: false
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - Debe tener al menos una mayuscula

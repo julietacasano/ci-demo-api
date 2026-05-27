@@ -29,3 +29,17 @@ jobs:
 
       - name: Ejecutar tests
         run: npm test
+
+      - name: Notificar exito en Discord
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d "{\"content\":\"✅ CI Pipeline exitoso en el proyecto ci-demo-api. Tests ejecutados correctamente.\"}" \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Notificar fallo en Discord
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d "{\"content\":\"❌ CI Pipeline falló en el proyecto ci-demo-api. Revisar GitHub Actions para ver el error.\"}" \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
